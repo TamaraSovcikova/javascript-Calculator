@@ -79,11 +79,13 @@
 }
 .box-shadow:first-of-type{
   width: 220px !important;
-  opacity: 0.5;
+  opacity: 0.7;
+  filter: blur(2px);
 }
 .box-shadow:last-of-type {
   width: 200px !important;
-  opacity: 0.2;
+  opacity: 0.3;
+  filter: blur(2px)
 }
 
 footer p{
