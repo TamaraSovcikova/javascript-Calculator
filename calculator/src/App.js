@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css'; 
 
 function App() {
@@ -9,18 +10,20 @@ function App() {
           <div className="row mb-3">
             <input
               type="text"
-              className="form-control form-control-sm custom-input"
-              placeholder="0"
+              className="form-control form-display form-control-sm custom-input"
+              value={'0'}              
               disabled
             />
           </div>
           <div className="row mb-3">
             <input
               type="text"
-              className="form-control form-control-lg custom-input"
-              placeholder="0"
+              className="form form-control custom-input"
+              value={'0'}              
               disabled
             />
+          <div className='box-shadow'></div>
+          <div className='box-shadow'></div>
           </div>
           <div className="row">
             <div className="col">
@@ -45,7 +48,9 @@ function App() {
               <button className="btn btn-block square-button custom-button">.</button>
             </div>
             <div className="col d-flex flex-column">
-              <button className="btn btn-block square-button custom-button">←</button>
+              <button className="btn btn-block square-button custom-button">
+                <i className="fas fa-backspace backspace"></i>
+              </button>
               <button className="btn btn-block square-button custom-button">-</button>
               <button className="btn btn-block square-button custom-button">+</button>
               <button className="btn btn-block square-button equals-button custom-button" style={{ flex: '2' }}>

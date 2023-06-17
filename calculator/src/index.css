@@ -1,6 +1,9 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
 :root {
   --calculatorBackground: #f7f7f7;
   --backdrop: #feece2;
+  --highlight: #ffb285;
 }
 
 .calculator {
@@ -30,7 +33,7 @@
   background-color: var(--backdrop) !important;
 }
 
-.custom-input,
+.custom-input:not(.form),
 .custom-button:not(.equals-button) {
   background-color: var(--calculatorBackground) !important;
   border: none;
@@ -54,14 +57,31 @@
   max-width: 400px;
 }
 
-.calculator .row:first-child .form-control {
-  background-color: #fff;
+.backspace, .form-display, .equals-button {
+  color: var(--highlight) !important;
 }
 
-.calculator .mb-3:not(:first-child) {
-  margin-top: 0;
-}
-
-.custom-input {
+.form{
+  background: linear-gradient(to right, #fad2ac, var(--highlight)) !important;  
+  font-size: 25px !important;
+  padding: 20px !important;
+  line-height: 1.5;  
+  width: 240px !important;
+  margin: auto; 
+  color: var(--backdrop) !important;
   border: none !important;
+}
+.box-shadow{  
+  background-color: var(--highlight);
+  height: 6px;
+  border-radius: 0px 0px 25px 25px;
+  margin: auto;
+}
+.box-shadow:first-of-type{
+  width: 220px !important;
+  opacity: 0.5;
+}
+.box-shadow:last-of-type {
+  width: 200px !important;
+  opacity: 0.2;
 }
