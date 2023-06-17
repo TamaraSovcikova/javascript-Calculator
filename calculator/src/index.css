@@ -85,3 +85,12 @@
   width: 200px !important;
   opacity: 0.2;
 }
+
+footer p{
+  margin: auto;
+  color: #af8a75;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  margin-top: 15px;
+}

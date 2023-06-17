@@ -59,6 +59,9 @@ function App() {
             </div>
           </div>
         </div>
+        <footer>
+          <p>Coded by<br />Tamara Sovcikova</p>
+        </footer>
       </div>
     </div>
   );
