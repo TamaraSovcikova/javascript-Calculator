@@ -1,8 +1,107 @@
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import './index.css'; 
+import './index.css';
+import * as math from 'mathjs';
 
 function App() {
+  const [displayValue, setDisplayValue] = useState('0');
+  const [historyValue, setHistoryValue] = useState('0');
+
+  const calculateResult = () => {
+    try {
+      const result = math.evaluate(historyValue);
+      return result;
+    } catch (error) {
+      return 'Error';
+    }
+  };
+
+  const handleButtonClick = (event) => {
+  const buttonValue = event.target.id;
+
+  if (buttonValue === 'clear') {
+    setHistoryValue('0');
+    setDisplayValue('0');
+  } else if (buttonValue === 'equals') {
+    const result = calculateResult();
+    setDisplayValue(result);
+    setHistoryValue(result);
+  } else if (buttonValue === 'backspace') {
+    setHistoryValue((prevDisplayValue) => {
+      if (prevDisplayValue.length === 1) {
+        setDisplayValue('0');
+        return '0';
+      } else {
+        const newDisplayValue = prevDisplayValue.slice(0, -1);
+        setDisplayValue(newDisplayValue);
+        return newDisplayValue;
+      }
+    });
+  } else if (buttonValue === '%') {
+    setHistoryValue((prevDisplayValue) => {
+      const lastChar = prevDisplayValue.slice(-1);
+      if (
+        lastChar === '*' ||
+        lastChar === '/' ||
+        lastChar === '-' ||
+        lastChar === '+' ||
+        lastChar === '%' ||
+        lastChar === '.'
+      ) {
+        return prevDisplayValue;
+      } else {
+        const result = parseFloat(prevDisplayValue) / 100;
+        setDisplayValue(result.toString());
+        return result.toString();
+      }
+    });
+  } else if (buttonValue === '.') {
+    setHistoryValue((prevDisplayValue) => {
+      const lastChar = prevDisplayValue.slice(-1);
+      if (
+        lastChar === '*' ||
+        lastChar === '/' ||
+        lastChar === '-' ||
+        lastChar === '+' ||
+        lastChar === '%' ||
+        lastChar === '.'
+      ) {
+        return prevDisplayValue;
+      } else if (prevDisplayValue.includes('.') === false) {
+        return prevDisplayValue + '.';
+      } else {
+        return prevDisplayValue;
+      }
+    });
+    setDisplayValue((prevDisplayValue) => {
+      if (prevDisplayValue.includes('.') === false) {
+        return prevDisplayValue + '.';
+      } else {
+        return prevDisplayValue;
+      }
+    });
+  } else {
+    setHistoryValue((prevDisplayValue) => {
+      const lastIndex = prevDisplayValue.length - 1;
+      if (prevDisplayValue === '0') {
+        return buttonValue;
+      } else if (
+        prevDisplayValue[lastIndex] === buttonValue &&
+        (buttonValue === '*' ||
+          buttonValue === '/' ||
+          buttonValue === '-' ||
+          buttonValue === '+' ||
+          buttonValue === '%' ||
+          buttonValue === '.')
+      ) {
+        return prevDisplayValue;
+      } else return prevDisplayValue + buttonValue;
+    });
+    setDisplayValue(buttonValue);
+  }
+};
+
   return (
     <div className="App">
       <div className="container">
@@ -11,56 +110,172 @@ function App() {
             <input
               type="text"
               className="form-control form-display form-control-sm custom-input"
-              value={'0'}              
+              value={historyValue}
               disabled
             />
           </div>
           <div className="row mb-3">
             <input
+              id="display"
               type="text"
               className="form form-control custom-input"
-              value={'0'}              
+              value={displayValue}
               disabled
             />
-          <div className='box-shadow'></div>
-          <div className='box-shadow'></div>
+            <div className="box-shadow"></div>
+            <div className="box-shadow"></div>
           </div>
           <div className="row">
             <div className="col">
-              <button className="btn btn-block square-button custom-button">C</button>
-              <button className="btn btn-block square-button custom-button">7</button>
-              <button className="btn btn-block square-button custom-button">4</button>
-              <button className="btn btn-block square-button custom-button">1</button>
-              <button className="btn btn-block square-button custom-button">%</button>
+              <button
+                id="clear"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                C
+              </button>
+              <button
+                id="7"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                7
+              </button>
+              <button
+                id="4"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                4
+              </button>
+              <button
+                id="1"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                1
+              </button>
+              <button
+                id="%"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                %
+              </button>
             </div>
             <div className="col">
-              <button className="btn btn-block square-button custom-button">/</button>
-              <button className="btn btn-block square-button custom-button">8</button>
-              <button className="btn btn-block square-button custom-button">5</button>
-              <button className="btn btn-block square-button custom-button">2</button>
-              <button className="btn btn-block square-button custom-button">0</button>
+              <button
+                id="/"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                /
+              </button>
+              <button
+                id="8"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                8
+              </button>
+              <button
+                id="5"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                5
+              </button>
+              <button
+                id="2"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                2
+              </button>
+              <button
+                id="0"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                0
+              </button>
             </div>
             <div className="col">
-              <button className="btn btn-block square-button custom-button">*</button>
-              <button className="btn btn-block square-button custom-button">9</button>
-              <button className="btn btn-block square-button custom-button">6</button>
-              <button className="btn btn-block square-button custom-button">3</button>
-              <button className="btn btn-block square-button custom-button">.</button>
+              <button
+                id="*"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                *
+              </button>
+              <button
+                id="9"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                9
+              </button>
+              <button
+                id="6"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                6
+              </button>
+              <button
+                id="3"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                3
+              </button>
+              <button
+                id="."
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                .
+              </button>
             </div>
             <div className="col d-flex flex-column">
-              <button className="btn btn-block square-button custom-button">
+              <button
+                id="backspace"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
                 <i className="fas fa-backspace backspace"></i>
               </button>
-              <button className="btn btn-block square-button custom-button">-</button>
-              <button className="btn btn-block square-button custom-button">+</button>
-              <button className="btn btn-block square-button equals-button custom-button" style={{ flex: '2' }}>
+              <button
+                id="-"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                -
+              </button>
+              <button
+                id="+"
+                className="btn btn-block square-button custom-button"
+                onClick={handleButtonClick}
+              >
+                +
+              </button>
+              <button
+                id="equals"
+                className="btn btn-block square-button equals-button custom-button"
+                style={{ flex: '2' }}
+                onClick={handleButtonClick}
+              >
                 =
               </button>
             </div>
           </div>
         </div>
         <footer>
-          <p>Coded by<br />Tamara Sovcikova</p>
+          <p>
+            Coded by
+            <br />
+            Tamara Sovcikova
+          </p>
         </footer>
       </div>
     </div>
