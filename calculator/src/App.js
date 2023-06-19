@@ -17,8 +17,9 @@ function App() {
     }
   };
 
-  const handleButtonClick = (event) => {
+const handleButtonClick = (event) => {
   const buttonValue = event.target.id;
+  const lastIndex = historyValue.length - 1;
 
   if (buttonValue === 'clear') {
     setHistoryValue('0');
@@ -28,34 +29,38 @@ function App() {
     setDisplayValue(result);
     setHistoryValue(result);
   } else if (buttonValue === 'backspace') {
-    setHistoryValue((prevDisplayValue) => {
-      if (prevDisplayValue.length === 1) {
+    setHistoryValue((prevHistoryValue) => {
+      if (prevHistoryValue.length === 1) {
         setDisplayValue('0');
         return '0';
       } else {
-        const newDisplayValue = prevDisplayValue.slice(0, -1);
+        const newDisplayValue = prevHistoryValue.slice(0, -1);
         setDisplayValue(newDisplayValue);
         return newDisplayValue;
       }
     });
-  } else if (buttonValue === '%') {
-    setHistoryValue((prevDisplayValue) => {
-      const lastChar = prevDisplayValue.slice(-1);
+  } else if (
+    buttonValue === '*' ||
+    buttonValue === '/' ||
+    buttonValue === '-' ||
+    buttonValue === '+' ||
+    buttonValue === '%'
+  ) {
+    setHistoryValue((prevHistoryValue) => {
+      const lastChar = prevHistoryValue[lastIndex];
       if (
         lastChar === '*' ||
         lastChar === '/' ||
         lastChar === '-' ||
         lastChar === '+' ||
-        lastChar === '%' ||
-        lastChar === '.'
+        lastChar === '%'
       ) {
-        return prevDisplayValue;
+        return prevHistoryValue.slice(0, lastIndex) + buttonValue;
       } else {
-        const result = parseFloat(prevDisplayValue) / 100;
-        setDisplayValue(result.toString());
-        return result.toString();
+        return prevHistoryValue + buttonValue;
       }
     });
+    setDisplayValue(''); // Clear the display for the second number
   } else if (buttonValue === '.') {
     setHistoryValue((prevDisplayValue) => {
       const lastChar = prevDisplayValue.slice(-1);
@@ -83,24 +88,50 @@ function App() {
     });
   } else {
     setHistoryValue((prevDisplayValue) => {
-      const lastIndex = prevDisplayValue.length - 1;
-      if (prevDisplayValue === '0') {
+      if (
+        prevDisplayValue === '0' ||
+        prevDisplayValue === 'Error' ||
+        (prevDisplayValue[lastIndex] === '0' && buttonValue === '0')
+      ) {
         return buttonValue;
       } else if (
-        prevDisplayValue[lastIndex] === buttonValue &&
-        (buttonValue === '*' ||
-          buttonValue === '/' ||
-          buttonValue === '-' ||
-          buttonValue === '+' ||
-          buttonValue === '%' ||
-          buttonValue === '.')
+        prevDisplayValue[lastIndex] === '*' ||
+        prevDisplayValue[lastIndex] === '/' ||
+        prevDisplayValue[lastIndex] === '-' ||
+        prevDisplayValue[lastIndex] === '+'
       ) {
-        return prevDisplayValue;
-      } else return prevDisplayValue + buttonValue;
+        return prevDisplayValue + buttonValue;
+      } else {
+        return prevDisplayValue + buttonValue;
+      }
     });
-    setDisplayValue(buttonValue);
+    setDisplayValue((prevDisplayValue) => {
+      if (
+        prevDisplayValue === '0' ||
+        prevDisplayValue === 'Error' ||
+        (prevDisplayValue[lastIndex] === '*' ||
+          prevDisplayValue[lastIndex] === '/' ||
+          prevDisplayValue[lastIndex] === '-' ||
+          prevDisplayValue[lastIndex] === '+')
+      ) {
+        return buttonValue;
+      } else {
+        return prevDisplayValue + buttonValue;
+      }
+    });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="App">
